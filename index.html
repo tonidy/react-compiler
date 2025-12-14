@@ -6,8 +6,11 @@
         <title>React WASM Compiler - Compile React in Browser</title>
 
         <!-- Speed-Highlight Syntax Highlighting -->
-        <link rel="stylesheet" href="https://unpkg.com/@speed-highlight/core/dist/themes/default.css">
-        <script src="https://unpkg.com/@speed-highlight/core@2.7.1/dist/index.umd.js"></script>
+        <link
+            rel="stylesheet"
+            href="https://unpkg.com/@speed-highlight/core/dist/themes/default.css"
+        />
+        <script src="https://unpkg.com/@speed-highlight/core/dist/index.js"></script>
 
         <!-- Import Map: React externals via esm.sh CDN -->
         <script type="importmap">
@@ -29,7 +32,10 @@
             }
 
             body {
-                font-family: system-ui, -apple-system, sans-serif;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
                 background: #000000;
                 height: 100vh;
                 overflow: hidden;
@@ -138,7 +144,10 @@
 
             .file-tree {
                 font-size: 13px;
-                font-family: system-ui, -apple-system, sans-serif;
+                font-family:
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
                 letter-spacing: 0.3px;
             }
 
@@ -230,7 +239,7 @@
                 height: 100%;
                 overflow: hidden;
                 background: #09090b;
-                font-family: 'Monaco', 'Courier New', monospace;
+                font-family: "Monaco", "Courier New", monospace;
                 font-size: 13px;
                 line-height: 1.6;
                 padding: 16px;
@@ -257,7 +266,7 @@
                 padding: 16px;
                 border: none;
                 outline: none;
-                font-family: 'Monaco', 'Courier New', monospace;
+                font-family: "Monaco", "Courier New", monospace;
                 font-size: 13px;
                 line-height: 1.6;
                 color: transparent;
@@ -508,7 +517,11 @@
                         <option value="esbuild">esbuild wasm</option>
                         <option value="swc">SWC wasm web</option>
                     </select>
-                    <button id="theme-toggle" class="theme-toggle" title="Toggle theme">
+                    <button
+                        id="theme-toggle"
+                        class="theme-toggle"
+                        title="Toggle theme"
+                    >
                         🌙
                     </button>
                 </div>
@@ -524,9 +537,13 @@
 
                 <!-- Code Editor -->
                 <div class="code-editor">
-                    <div class="editor-header" id="editor-header">entry.tsx</div>
+                    <div class="editor-header" id="editor-header">
+                        entry.tsx
+                    </div>
                     <div class="editor-wrapper">
-                        <pre class="editor-highlight"><code id="code-highlight"></code></pre>
+                        <pre
+                            class="editor-highlight"
+                        ><code id="code-highlight"></code></pre>
                         <textarea
                             id="code-editor"
                             class="editor-textarea"

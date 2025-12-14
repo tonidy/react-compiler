@@ -6,12 +6,6 @@
 import { createRunner } from "./wasm-runner.js";
 import { fetchSourceFile } from "./file-loader.js";
 
-// Get highlightCode from Speed-Highlight UMD global
-const getHighlightCode = () => {
-  // Speed-Highlight UMD exposes as window.SpeedHighlight.highlightCode
-  return window.SpeedHighlight?.highlightCode || null;
-};
-
 // DOM Elements
 const codeEditor = document.getElementById("code-editor");
 const codeHighlight = document.getElementById("code-highlight");
@@ -415,17 +409,21 @@ function getThemeColors() {
 function updateSyntaxHighlight() {
   const code = codeEditor.value;
   const language = currentFile.endsWith('.js') ? 'js' : 'ts';
-  const highlightCode = getHighlightCode();
+  const highlightElement = window.SpeedHighlight?.highlightElement;
 
   // If Speed-Highlight isn't loaded yet, just show plaintext
-  if (!highlightCode) {
+  if (!highlightElement) {
     codeHighlight.textContent = code;
     return;
   }
 
   try {
-    const highlighted = highlightCode(code, language);
-    codeHighlight.innerHTML = highlighted;
+    // Set the text content and language class
+    codeHighlight.textContent = code;
+    codeHighlight.className = `shj-lang-${language}`;
+
+    // Highlight the element
+    highlightElement(codeHighlight, language);
   } catch (err) {
     // Fallback if highlighting fails
     console.warn("[playground] Syntax highlighting error:", err);
