@@ -1,6 +1,6 @@
-# ReactCompile
+# React WASM Compiler
 
-A browser-based React IDE that compiles React apps in the browser using WASM compilers.
+A browser-based React IDE that compiles React apps in the browser using WASM (esbuild-wasm and SWC).
 
 ## Features
 

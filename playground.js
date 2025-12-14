@@ -341,7 +341,7 @@ themeToggle.addEventListener("click", () => {
  * Initialize theme from localStorage
  */
 function initializeTheme() {
-  const savedTheme = localStorage.getItem("reactcompile-theme") || "dark";
+  const savedTheme = localStorage.getItem("react-wasm-compiler-theme") || "dark";
   isDarkTheme = savedTheme === "dark";
   applyTheme();
 }
@@ -362,7 +362,7 @@ function applyTheme() {
     themeToggle.title = "Switch to dark theme";
   }
 
-  localStorage.setItem("reactcompile-theme", isDarkTheme ? "dark" : "light");
+  localStorage.setItem("react-wasm-compiler-theme", isDarkTheme ? "dark" : "light");
 
   // Recompile to apply theme to React app
   compileApplication();
