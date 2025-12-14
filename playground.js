@@ -5,9 +5,11 @@
 
 import { createRunner } from "./wasm-runner.js";
 import { fetchSourceFile } from "./file-loader.js";
+import { highlightCode } from "@speed-highlight/core";
 
 // DOM Elements
 const codeEditor = document.getElementById("code-editor");
+const codeHighlight = document.getElementById("code-highlight");
 const editorHeader = document.getElementById("editor-header");
 const fileTree = document.getElementById("file-tree");
 const compilerSelect = document.getElementById("compiler-select");
@@ -218,6 +220,9 @@ function loadFile(path, fileName = null) {
 
   codeEditor.value = content;
 
+  // Update syntax highlighting
+  updateSyntaxHighlight();
+
   // Update header with filename (use provided fileName or extract from path)
   const displayName = fileName || path.split("/").pop() || path;
   editorHeader.textContent = displayName;
@@ -297,6 +302,9 @@ codeEditor.addEventListener("input", () => {
   // Update file contents
   fileContents.set(currentFile, codeEditor.value);
 
+  // Update syntax highlighting
+  updateSyntaxHighlight();
+
   // Clear existing timeout
   if (compileTimeout) {
     clearTimeout(compileTimeout);
@@ -307,6 +315,11 @@ codeEditor.addEventListener("input", () => {
     compileApplication();
   }, 500);
 });
+
+/**
+ * Sync scroll for syntax highlighting
+ */
+codeEditor.addEventListener("scroll", syncScroll);
 
 /**
  * Handle compiler change
@@ -392,6 +405,32 @@ function getThemeColors() {
 }
 
 /**
+ * Update syntax highlighting based on editor content
+ */
+function updateSyntaxHighlight() {
+  const code = codeEditor.value;
+  const language = currentFile.endsWith('.js') ? 'js' : 'ts';
+
+  try {
+    const highlighted = highlightCode(code, language);
+    codeHighlight.innerHTML = highlighted;
+  } catch (err) {
+    // Fallback if highlighting fails
+    codeHighlight.textContent = code;
+  }
+}
+
+/**
+ * Sync scroll between editor and highlight
+ */
+function syncScroll() {
+  const editorWrapper = codeEditor.parentElement;
+  const highlightPre = editorWrapper.querySelector('.editor-highlight');
+  highlightPre.scrollTop = codeEditor.scrollTop;
+  highlightPre.scrollLeft = codeEditor.scrollLeft;
+}
+
+/**
  * Main initialization
  */
 async function main() {
@@ -404,6 +443,9 @@ async function main() {
 
     // Initialize file tree (automatically loads entry.tsx)
     initializeFileTree();
+
+    // Initial syntax highlighting
+    updateSyntaxHighlight();
 
     // Initialize runner
     const initialCompiler = compilerSelect.value || "esbuild";

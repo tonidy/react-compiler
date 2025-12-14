@@ -5,6 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>React WASM Compiler - Compile React in Browser</title>
 
+        <!-- Speed-Highlight Syntax Highlighting -->
+        <link rel="stylesheet" href="https://unpkg.com/@speed-highlight/core/dist/themes/default.css">
+
         <!-- Import Map: React externals via esm.sh CDN -->
         <script type="importmap">
             {
@@ -12,7 +15,8 @@
                     "react": "https://esm.sh/react@19.2.3",
                     "react/jsx-runtime": "https://esm.sh/react@19.2.3/jsx-runtime",
                     "react-dom": "https://esm.sh/react-dom@19.2.3",
-                    "react-dom/client": "https://esm.sh/react-dom@19.2.3/client"
+                    "react-dom/client": "https://esm.sh/react-dom@19.2.3/client",
+                    "@speed-highlight/core": "https://unpkg.com/@speed-highlight/core/dist/index.js"
                 }
             }
         </script>
@@ -212,7 +216,43 @@
                 text-transform: uppercase;
             }
 
+            .editor-wrapper {
+                flex: 1;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .editor-highlight {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                background: #09090b;
+                font-family: 'Monaco', 'Courier New', monospace;
+                font-size: 13px;
+                line-height: 1.6;
+                padding: 16px;
+                pointer-events: none;
+            }
+
+            .editor-highlight code {
+                display: block;
+                background: none;
+                padding: 0;
+                margin: 0;
+                color: inherit;
+            }
+
+            .editor-highlight pre {
+                margin: 0;
+                padding: 0;
+                background: none;
+            }
+
             .editor-textarea {
+                position: relative;
                 flex: 1;
                 padding: 16px;
                 border: none;
@@ -220,15 +260,16 @@
                 font-family: 'Monaco', 'Courier New', monospace;
                 font-size: 13px;
                 line-height: 1.6;
-                color: #e4e4e7;
-                background: #09090b;
+                color: transparent;
+                background: transparent;
                 resize: none;
                 overflow-y: auto;
                 caret-color: #e4e4e7;
+                z-index: 10;
             }
 
             .editor-textarea::selection {
-                background: #3f3f46;
+                background: rgba(63, 63, 70, 0.5);
             }
 
             /* Live Preview */
@@ -409,14 +450,19 @@
                 color: #6b7280;
             }
 
-            body.light-theme .editor-textarea {
+            body.light-theme .editor-highlight {
                 background: #ffffff;
                 color: #1f2937;
+            }
+
+            body.light-theme .editor-textarea {
+                background: transparent;
+                color: transparent;
                 caret-color: #1f2937;
             }
 
             body.light-theme .editor-textarea::selection {
-                background: #bfdbfe;
+                background: rgba(191, 219, 254, 0.5);
             }
 
             body.light-theme .live-preview {
@@ -479,11 +525,14 @@
                 <!-- Code Editor -->
                 <div class="code-editor">
                     <div class="editor-header" id="editor-header">entry.tsx</div>
-                    <textarea
-                        id="code-editor"
-                        class="editor-textarea"
-                        spellcheck="false"
-                    ></textarea>
+                    <div class="editor-wrapper">
+                        <pre class="editor-highlight"><code id="code-highlight"></code></pre>
+                        <textarea
+                            id="code-editor"
+                            class="editor-textarea"
+                            spellcheck="false"
+                        ></textarea>
+                    </div>
                 </div>
 
                 <!-- Live Preview -->
